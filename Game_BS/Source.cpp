@@ -9,7 +9,7 @@ bool isStarted = false;
 
 const int rows = 11;
 const int columns = 11;
-const int maxShots = 20;
+const int maxShots = 35;
 
 int currentShot = 1;
 int input;
@@ -49,8 +49,8 @@ void gameRules()
 	cout << "the coordinates of the shot you wish to make sepperated by a space\n";
 	cout << "Then press enter";
 	cout << endl << "ie. 2 3 [ENTER]" << endl;
-	cout << "[Hit] A hit is marked with H\n[Miss] a miss is marked wiht M\n[Sunk]A sunk ship is marked by S\n" << endl;
-	cout << endl << "The game ends when all ships have been sunk\n";
+	cout << "[Hit] A hit is marked with H\n[Miss] a miss is marked with M\n[Sunk]A sunk ship is marked with S\n" << endl;
+	cout << endl << "The game ends when all ships have been sunk or you run out of shots\n You only get 35 shots.\n";
 	cout << endl << "[1] Alright let's play!\n";
 	cin >> input;
 	
@@ -165,7 +165,7 @@ public:
 			{
 				isVert = false;
 			}
-			symbol = "X";
+			symbol = ".";
 		}
 		isOnBoard();
 	}
@@ -261,6 +261,7 @@ void gameIsOver()
 {
 	cout << "GAME OVER" << endl;
 	cout << result;
+	cin >> input;
 }
 
 int main()
@@ -288,7 +289,7 @@ int main()
 		clear();
 		showBoard();
 
-		Ship Carrier(2, false);
+		Ship Carrier(6, false);
 		showBoard();
 
 		Ship Battleship(5, false);
@@ -305,19 +306,9 @@ int main()
 		
 		for (int i = 0; i < currentShot; i++)
 		{
-
-			getShot(i);
-			Carrier.testShot(shots[i]);
-			Battleship.testShot(shots[i]);
-			Cruiser.testShot(shots[i]);
-			Sub.testShot(shots[i]);
-			Destroyer.testShot(shots[i]);
-			showBoard();
-			
 			if (currentShot == maxShots)
 			{
 				result = "You Lose :(";
-				gameIsOver();
 				break;
 			}
 
@@ -328,9 +319,17 @@ int main()
 				&& Destroyer.isSunk)
 			{
 				result = "You Win!";
-				gameIsOver();
 				break;
 			}
+
+			getShot(i);
+			Carrier.testShot(shots[i]);
+			Battleship.testShot(shots[i]);
+			Cruiser.testShot(shots[i]);
+			Sub.testShot(shots[i]);
+			Destroyer.testShot(shots[i]);
+			showBoard();
 		}
+		gameIsOver();
 	}
 }
